@@ -1,0 +1,16 @@
+# Testbench top module.
+./rtl/tb_top.v
+
+# IP
+./ip/prim_sim.v
+#./ip/prim_syn.v
+../src/ip/gowin_pll/gowin_pll.v
+
+# DUT
+../src/rtl/tx_top.v
+../src/rtl/rstGen.v
+../src/rtl/crc.v
+../src/rtl/enc4b5b.v
+../src/rtl/serialTx.v
+../src/rtl/ethernetFrameGen.v
+../src/rtl/adc.v
