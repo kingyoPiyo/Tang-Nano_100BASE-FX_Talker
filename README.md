@@ -12,24 +12,24 @@ Tang-Nano FPGAボードにSFPモジュール（光ファイバ）を接続して
 - Ethernet Media Converter: WG-33-1GX1GT-SFP (10Gtek)
 
 # ハードウェア
-至ってシンプルです。Tang-Nanoから差動3.3V信号を出力し、簡易的な抵抗ネットワークを通してSFPの差動入力端子に接続しています。  
-送信データを生成するために、外部にDelta-Sigma ADCの回路を構成し、10bitでAD変換した結果を取得してUDP送信します。  
-なお、Tang-Nanoには24MHzの水晶オシレータが搭載されていますが、PLLにより100BASE-FXで必要な125MHzを生成することができないため50MHzのオシレータの信号を別途入力しています。  
+Tang-Nanoから差動3.3V信号を出力し、簡易的な抵抗ネットワークを通してSFPの差動入力端子に接続しています。    
+ボード上に24MHzの水晶オシレータが搭載されていますが、100BASE-FXで必要な125MHzをPLLで生成することができないため、50MHzのオシレータの信号を別途入力しています。  
+RC-LPFで構成したDelta-Sigma ADCにより可変抵抗で分圧した電圧値を取得し、AD変換結果をUDP送信します。  
 <img src="doc/TangNano_100BASE-FX.png" width="500">  
 余談ですが、Tang-Nanoは基板配線の都合上、GNDにノイズが乗りやすいです。普通に使う分には問題になりませんが、LCDを動作させる場合や高速なクロックを使用する場合は、GNDを強化する改造を行ったほうが無難です。  
-以下にGND強化の改造を行った際のPLL出力ジッタを調査した資料があるので参考ください。  
+以下にGND強化の改造を行った際のPLL出力ジッタを調査した資料があるのでご参考ください。  
 https://photos.app.goo.gl/G1rWaLsfJERK9acAA
 
 # FPGA内部ブロック図
 AD変換→変換完了トリガとボタンB入力をANDして、Ethernetフレーム送信トリガを生成→Ethernetフレーム生成→4b5b、シリアライズ、NRZIエンコードを掛けて出力しています。  
+肝となるEthernetフレームの生成はベタに実装しています。  
 （図が適当で申し訳ありません・・・）  
 <img src="doc/BlockDiagram.png" width="500">  
 
 # 実験方法
 src/rtl/ethernetFrameGen.v に各種パラメタをparameter定義していますので、各自の環境に合わせて変更ください。  
-特に"EtherDestinationMAC"は宛先ホストのMACアドレスを指定しないとブロードキャストされて大変なことになります・・・。  
+特に"EtherDestinationMAC"は宛先ホストのMACアドレスを指定しないと、初期状態ではブロードキャストされて大変なことになります・・・。  
 Tang-Nanoに書き込んだ後、基板上のButton-Bを押すとAD変換結果がUDP送信されます。Wiresharkなどでキャプチャして動作を確認することができます。  
-
 
 # 開発環境
 - IDE : GOWIN FPGA Designer Version1.9.2.02 Beta build(35976)
