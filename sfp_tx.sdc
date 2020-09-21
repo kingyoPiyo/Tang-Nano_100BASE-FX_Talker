@@ -39,11 +39,7 @@ set_false_path -from [get_ports {res_n}]
 set_false_path -from [get_ports {btn_b}]
 
 set_false_path -to   [get_ports {onb_led_r}]
-set_false_path -to   [get_ports {onb_led_g}]
-set_false_path -to   [get_ports {onb_led_b}]
 
 set_false_path -from [get_ports {sfp_los}]
-set_false_path -from [get_ports {sfp_rx_p}]
-set_false_path -from [get_ports {sfp_rx_n}]
-set_false_path -to   [get_ports {sfp_tx_p}]
-set_false_path -to   [get_ports {sfp_tx_n}]
+set_false_path -from [get_ports {sfp_rx}]
+set_false_path -to   [get_ports {sfp_tx}]
