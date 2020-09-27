@@ -18,7 +18,7 @@ RC-LPFで構成したDelta-Sigma ADCにより可変抵抗で分圧した電圧�
 <img src="doc/TangNano_100BASE-FX.png" width="500">  
 余談ですが、Tang-Nanoは基板配線の都合上、GNDにノイズが乗りやすいです。普通に使う分には問題になりませんが、LCDを動作させる場合や高速なクロックを使用する場合は、GNDを強化する改造を行ったほうが無難です。  
 以下にGND強化の改造を行った際のPLL出力ジッタを調査した資料があるのでご参考ください。  
-https://photos.app.goo.gl/G1rWaLsfJERK9acAA
+https://photos.app.goo.gl/jZSqenga1VBtyqzE7
 
 # FPGA内部ブロック図
 AD変換→変換完了トリガとボタンB入力をANDして、Ethernetフレーム送信トリガを生成→Ethernetフレーム生成→4b5b、シリアライズ、NRZIエンコードを掛けて出力しています。  
