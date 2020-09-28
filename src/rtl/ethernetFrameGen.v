@@ -5,10 +5,10 @@
 * Reference : https://www.fpga4fun.com/10BASE-T.html
 ******************************************************************/
 module ethernetFrameGen (
-    input   wire            i_clk,      // 25MHz
-    input   wire            i_res_n,    // Reset
-    input   wire            i_tx_trig,  // Tx Trig(Positive 1clk pulse)
-    input   wire    [31:0]  i_tx_data,  // UDP Payload
+    input   wire            i_clk,          // 25MHz
+    input   wire            i_res_n,        // Reset
+    input   wire            i_tx_trig,      // Tx Trig(Positive 1clk pulse)
+    input   wire    [31:0]  i_tx_data,      // UDP Payload
     // MII I/F
     output  wire            o_mii_tx_clk,   // MII TX_CLK
     output  wire            o_mii_tx_en,    // MII TX_EN
@@ -187,8 +187,8 @@ module ethernetFrameGen (
         if (~i_res_n) begin
             r_crc_en <= 1'b0;
         end else begin
-            if (r_state == 8'd16) r_crc_en <= 1'b1;                 // CRC calc start
-            if (r_state == (8'd84  + (UDPlength * 2))) r_crc_en <= 1'b0;  // CRC calc end
+            if (r_state == 8'd16) r_crc_en <= 1'b1;                         // CRC calc start
+            if (r_state == (8'd84  + (UDPlength * 2))) r_crc_en <= 1'b0;    // CRC calc end
         end
     end
     
@@ -200,16 +200,16 @@ module ethernetFrameGen (
         .IN_DATA ( r_4b_data[3:0] ),
         .OUT_CRC ( w_crc_out[31:0] )
     );
-    defparam crc.DATA_WIDTH = 4;
-    defparam crc.CRC_WIDTH = 32;
-    defparam crc.POLYNOMIAL = 32'h04C11DB7;
-    defparam crc.SEED_VAL = 32'hFFFFFFFF;
-    defparam crc.OUTPUT_EXOR = 32'hFFFFFFFF;
+    defparam crc.DATA_WIDTH     = 4;
+    defparam crc.CRC_WIDTH      = 32;
+    defparam crc.POLYNOMIAL     = 32'h04C11DB7;
+    defparam crc.SEED_VAL       = 32'hFFFFFFFF;
+    defparam crc.OUTPUT_EXOR    = 32'hFFFFFFFF;
 
     // OUTPUT
-    assign o_mii_txd = (r_state == (8'd85  + (UDPlength * 2))) ? {w_crc_out[28], w_crc_out[29], w_crc_out[30], w_crc_out[31]} :
-                       (r_state == (8'd86  + (UDPlength * 2))) ? {w_crc_out[24], w_crc_out[25], w_crc_out[26], w_crc_out[27]} :
-                       (r_state == (8'd87  + (UDPlength * 2))) ? {w_crc_out[20], w_crc_out[21], w_crc_out[22], w_crc_out[23]} :
+    assign o_mii_txd = (r_state == (8'd85 + (UDPlength * 2))) ? {w_crc_out[28], w_crc_out[29], w_crc_out[30], w_crc_out[31]} :
+                       (r_state == (8'd86 + (UDPlength * 2))) ? {w_crc_out[24], w_crc_out[25], w_crc_out[26], w_crc_out[27]} :
+                       (r_state == (8'd87 + (UDPlength * 2))) ? {w_crc_out[20], w_crc_out[21], w_crc_out[22], w_crc_out[23]} :
                        (r_state == (8'd88 + (UDPlength * 2))) ? {w_crc_out[16], w_crc_out[17], w_crc_out[18], w_crc_out[19]} :
                        (r_state == (8'd89 + (UDPlength * 2))) ? {w_crc_out[12], w_crc_out[13], w_crc_out[14], w_crc_out[15]} :
                        (r_state == (8'd90 + (UDPlength * 2))) ? {w_crc_out[ 8], w_crc_out[ 9], w_crc_out[10], w_crc_out[11]} :
